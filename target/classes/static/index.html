@@ -4,7 +4,116 @@
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
-<body>
+<body onload="initialRequest()">
+<canvas id="pic">Ваш браузер не поддерживает кеки...</canvas>
+<div>Первое слово на изображении подходит к нему  <button id="result1" onclick="changeText(this.id)">Да</button></div>
+<div>Второе слово на изображении подходит к нему  <button id="result2" onclick="changeText(this.id)">Да</button></div>
+<div>Третье слово на изображении подходит к нему  <button id="result3" onclick="changeText(this.id)">Да</button></div>
+<div>Первое слово на изображении подходит ко второму  <button id="result4" onclick="changeText(this.id)">Да</button></div>
+<div>Первое слово на изображении подходит к третьему  <button id="result5" onclick="changeText(this.id)">Да</button></div>
+<div>Второе слово на изображении подходит к третьему  <button id="result6" onclick="changeText(this.id)">Да</button></div>
+<button id="send" onclick="requestKek()">Отправить данные и получить еще кек!</button>
+<script>
+    function requestKek()
+    {
+        let form = "";
+        if (document.getElementById(result1).textContent === "Да") form += '1';
+        else form += '0';
+        if (document.getElementById(result2).textContent === "Да") form += '1';
+        else form += '0';
+        if (document.getElementById(result3).textContent === "Да") form += '1';
+        else form += '0';
+        if (document.getElementById(result4).textContent === "Да") form += '1';
+        else form += '0';
+        if (document.getElementById(result5).textContent === "Да") form += '1';
+        else form += '0';
+        if (document.getElementById(result6).textContent === "Да") form += '1';
+        else form += '0';
+        let url = new URL('http://localhost:8080/g1');
+        url.searchParams.set('form', form);
+        let xhr = new XMLHttpRequest();
+        xhr.open("GET", url, [true]);
+        xhr.send();
+        xhr.onload = function() {
+            if (xhr.status != 200) {
+                alert(`Ошибка ${xhr.status}: ${xhr.statusText}`);
+            }
+            else {
+                var canvas = document.getElementById('pic');
 
+                if (canvas.getContext){
+                    painter(xhr.response);
+                } else {
+                    alert("Ваш браузер не поддерживает кеки...");
+                }
+            }
+        };
+    }
+    function changeText(id)
+    {
+        if ( document.getElementById(id).textContent == "Да") document.getElementById(id).textContent = "Нет"
+        else document.getElementById(id).textContent = "Да"
+    }
+
+    function painter(imgData) {
+        "use strict";
+        var canvas = document.getElementById("myCanvas");
+        var ctx = canvas.getContext("2d");
+
+        //var uInt8Array = new Uint8Array(imgData);
+        var uInt8Array = imgData;
+        var i = uInt8Array.length;
+        var binaryString = [i];
+        while (i--) {
+            binaryString[i] = String.fromCharCode(uInt8Array[i]);
+        }
+        var data = binaryString.join('');
+
+        var base64 = window.btoa(data);
+
+        var img = new Image();
+        img.src = "data:image/png;base64," + base64;
+        img.onload = function () {
+            console.log("Image Onload");
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        };
+        img.onerror = function (stuff) {
+            console.log("Img Onerror:", stuff);
+        };
+
+    }
+    /*function painter() {
+        var canvas = document.getElementById('pic');
+        var ctx = canvas.getContext("2d");
+
+        ctx.fillStyle = "rgb(200,0,0)";
+        ctx.fillRect (10, 10, 55, 50);
+
+        ctx.fillStyle = "rgba(0, 0, 200, 0.5)";
+        ctx.fillRect (30, 30, 55, 50);
+    }*/
+
+    function initialRequest() {
+        let url = new URL('http://localhost:8080/g1');
+        let xhr = new XMLHttpRequest();
+        xhr.open("GET", url, [true]);
+        xhr.send();
+        xhr.onload = function() {
+            if (xhr.status != 200) {
+            alert(`Ошибка ${xhr.status}: ${xhr.statusText}`);
+            }
+        else {
+                var canvas = document.getElementById('pic');
+
+                if (canvas.getContext){
+                    painter(xhr.response);
+                } else {
+                    alert("Ваш браузер не поддерживает кеки...");
+                }
+            }
+        };
+
+    }
+</script>
 </body>
 </html>
