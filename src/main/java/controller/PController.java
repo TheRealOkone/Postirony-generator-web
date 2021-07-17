@@ -19,8 +19,8 @@ public class PController {
     }
 
     @RequestMapping(value = "/g1", method = RequestMethod.GET)
-    public String gone() {
-        return "bruh";
+    public byte[] gone() {
+        return new byte[160000];
     }
 
     @RequestMapping(value = "/g2", method = RequestMethod.GET)
