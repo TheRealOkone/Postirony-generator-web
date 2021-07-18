@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import ru.parse.Parser;
 @Controller
 public class PController {
+    static {
+        System.loadLibrary("TNParser");
+    }
     public PController(String[] args){
         Parser parser = new Parser();
         Gui gui = new Gui();

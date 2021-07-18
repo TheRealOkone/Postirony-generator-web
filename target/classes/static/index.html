@@ -17,16 +17,16 @@
     function requestKek()
     {
         let form = "";
-        if (document.getElementById(result1).textContent === "Да") form += '1';
-        else form += '0';
-        if (document.getElementById(result2).textContent === "Да") form += '1';
-        else form += '0';
-        if (document.getElementById(result3).textContent === "Да") form += '1';
-        else form += '0';
-        if (document.getElementById(result4).textContent === "Да") form += '1';
-        else form += '0';
-        if (document.getElementById(result5).textContent === "Да") form += '1';
-        else form += '0';
+        if (document.getElementById(result1).textContent === "Да") form += '1 ';
+        else form += '0 ';
+        if (document.getElementById(result2).textContent === "Да") form += '1 ';
+        else form += '0 ';
+        if (document.getElementById(result3).textContent === "Да") form += '1   ';
+        else form += '0 ';
+        if (document.getElementById(result4).textContent === "Да") form += '1 ';
+        else form += '0 ';
+        if (document.getElementById(result5).textContent === "Да") form += '1 ';
+        else form += '0 ';
         if (document.getElementById(result6).textContent === "Да") form += '1';
         else form += '0';
         let url = new URL('http://localhost:8080/g1');
