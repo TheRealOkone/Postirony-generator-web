@@ -11,7 +11,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 public class Parser {
     static {
-        System.loadLibrary("TNParser");
+        Runtime.getRuntime().loadLibrary("TNParser");
     }
     static native void activate();
     static native void deactivate();

@@ -11,7 +11,7 @@ import ru.parse.Parser;
 @Controller
 public class PController {
     static {
-        System.loadLibrary("TNParser");
+        Runtime.getRuntime().loadLibrary("TNParser");
     }
     public PController(String[] args){
         Parser parser = new Parser();
