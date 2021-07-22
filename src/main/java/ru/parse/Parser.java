@@ -43,9 +43,9 @@ public class Parser {
             if(bank.contains(filejpg) || bank.contains(filetxt)){
                 prev = false;
             }
-            bank.add(filejpg);
-            bank.add(filetxt);
             if((!jjj.contains(filejpg)) && (!ttt.contains(filetxt)) && filejpg.isFile() && filetxt.isFile() && che && prev){
+                bank.add(filejpg);
+                bank.add(filetxt);
                 try {
                     System.out.println(filejpg);
                     System.out.println(filetxt);
