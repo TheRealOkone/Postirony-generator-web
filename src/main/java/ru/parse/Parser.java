@@ -35,11 +35,8 @@ public class Parser {
             File filejpg = new File("KZ", "image" + String.valueOf(i) +".jpg");
             File filetxt = new File("KZ", "request" + String.valueOf(i) +".txt");
             try {
-                BufferedReader a;
-                System.out.println(a = new BufferedReader(new FileReader(filejpg)));
-                a.close();
-                System.out.println(a = new BufferedReader(new FileReader(filetxt)));
-                a.close();
+                new BufferedReader(new FileReader(filejpg)).close();
+                new BufferedReader(new FileReader(filetxt)).close();
             }catch(Exception e){
                 che = false;
             }
@@ -49,8 +46,9 @@ public class Parser {
             bank.add(filejpg);
             bank.add(filetxt);
             if((!jjj.contains(filejpg)) && (!ttt.contains(filetxt)) && filejpg.isFile() && filetxt.isFile() && che && prev){
-
                 try {
+                    System.out.println(filejpg);
+                    System.out.println(filetxt);
                     qjpg.put(filejpg);
                     qtxt.put(filetxt);
 

@@ -15,11 +15,8 @@ public class PController {
     }
     public PController(String[] args){
         Parser parser = new Parser();
-        Gui gui = new Gui();
         Postironia post = new Postironia();
-        Runnable task1 = () -> post.oldmain(parser,gui);
-        Thread thread1 = new Thread(task1);
-        thread1.start();
+        post.oldmain(parser);
     }
 
     @RequestMapping(value = "/g1", method = RequestMethod.GET)
