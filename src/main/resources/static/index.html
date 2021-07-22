@@ -6,13 +6,13 @@
 </head>
 <body onload="initialRequest()">
 <canvas id="pic">Ваш браузер не поддерживает кеки...</canvas>
-<div>Первое слово на изображении подходит к нему  <button id="result1" onclick="changeText(this.id)">Да</button></div>
+<!--<div>Первое слово на изображении подходит к нему  <button id="result1" onclick="changeText(this.id)">Да</button></div>
 <div>Второе слово на изображении подходит к нему  <button id="result2" onclick="changeText(this.id)">Да</button></div>
 <div>Третье слово на изображении подходит к нему  <button id="result3" onclick="changeText(this.id)">Да</button></div>
 <div>Первое слово на изображении подходит ко второму  <button id="result4" onclick="changeText(this.id)">Да</button></div>
 <div>Первое слово на изображении подходит к третьему  <button id="result5" onclick="changeText(this.id)">Да</button></div>
-<div>Второе слово на изображении подходит к третьему  <button id="result6" onclick="changeText(this.id)">Да</button></div>
-<button id="send" onclick="requestKek()">Отправить данные и получить еще кек!</button>
+<div>Второе слово на изображении подходит к третьему  <button id="result6" onclick="changeText(this.id)">Да</button></div> -->
+<button id="send" onclick="initialRequest()">ЭТА КНОПКА КРАСНАЯ И НА НЕЙ НАПИСАНО "ИСЧО"</button>
 <script>
     function requestKek()
     {
@@ -57,7 +57,7 @@
 
     function painter(imgData) {
         "use strict";
-        var canvas = document.getElementById("myCanvas");
+        var canvas = document.getElementById("pic");
         var ctx = canvas.getContext("2d");
 
         //var uInt8Array = new Uint8Array(imgData);
