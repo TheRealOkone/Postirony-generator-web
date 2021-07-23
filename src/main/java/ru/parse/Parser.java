@@ -51,11 +51,9 @@ public class Parser {
                     System.out.println(filetxt);
                     qjpg.put(filejpg);
                     qtxt.put(filetxt);
-
                 } catch (InterruptedException e) {
                     deactivate();
                 }
-
             }
             che = true;
             prev = true;

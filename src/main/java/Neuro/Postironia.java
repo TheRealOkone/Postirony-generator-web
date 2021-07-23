@@ -1,5 +1,6 @@
 package Neuro;
 
+import controller.PController;
 import interface_.Gui;
 import ru.parse.BalabobaParser;
 import ru.parse.Parser;
@@ -13,7 +14,7 @@ import java.io.*;
 import java.util.Arrays;
 
 public class Postironia {
-    public void oldmain(Parser parser) {
+    public void oldmain(Parser parser, PController controller) {
         File ZN = new File("ZN");
         deleteDirectory(ZN);
         ZN.mkdir();
@@ -26,7 +27,6 @@ public class Postironia {
                 try (BufferedReader reader = new BufferedReader(new FileReader(fRequest))) {
                     request = reader.readLine();
                 }
-                fRequest.delete();
                 String text = crop(BalabobaParser.getText(request));
                 System.out.println(text);
                 BufferedImage read;
@@ -47,7 +47,9 @@ public class Postironia {
                     g.drawString(text, x, y);
                     g.dispose();
                 } catch (Exception e) {
+                    System.exit(0);
                     e.printStackTrace();
+                    fRequest.delete();
                     filePicture.delete();
                     continue;
                 }
@@ -57,11 +59,17 @@ public class Postironia {
                     requestIndex = 0;
                 File resultImage = new File(imageName);
                 ImageIO.write(read, "jpg", resultImage);
+
+                controller.images.put(resultImage);
+
+                fRequest.delete();
                 filePicture.delete();
             }
         }
         catch (Exception e) {
             e.printStackTrace();
+            System.exit(0);
+
         }
     }
 

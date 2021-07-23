@@ -6,8 +6,8 @@ import org.springframework.context.ConfigurableApplicationContext;
 
 @SpringBootApplication
 public class RunApp {
-    public static void main(String[] args) {
-        System.setProperty("java.library.path", "C:\\Windows\\System32");
+    public static void main(String[] args) throws InterruptedException {
+        System.setProperty("java.library.path", "\\");
         SpringApplicationBuilder builder = new SpringApplicationBuilder(RunApp.class);
         builder.headless(false);
         ConfigurableApplicationContext context = builder.run(args);
