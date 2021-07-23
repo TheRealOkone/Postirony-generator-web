@@ -3,6 +3,8 @@ package controller;
 import Neuro.*;
 import interface_.*;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -43,7 +45,7 @@ public class PController {
 
     @RequestMapping(value = "/g1", method = RequestMethod.GET)
     @ResponseBody
-    public byte[] gone() throws IOException {
+    public String gone() throws IOException, JSONException {
         File image = null;
         try {
             image = images.take();
@@ -51,13 +53,18 @@ public class PController {
             e.printStackTrace();
         }
         BufferedImage bufferedImage = ImageIO.read(image);
-
+        int h = bufferedImage.getHeight();
+        int w = bufferedImage.getWidth();
         WritableRaster raster = bufferedImage .getRaster();
         DataBufferByte data   = (DataBufferByte) raster.getDataBuffer();
         sus = data.getData();
 
         System.out.println("asddd31222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222dddddddd\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
-        return sus;
+        JSONObject jsonComplex = new JSONObject();
+        jsonComplex.put("height", h);
+        jsonComplex.put("width", w);
+        jsonComplex.put("image", new String(sus, "UTF8"));
+        return jsonComplex.toString();
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
