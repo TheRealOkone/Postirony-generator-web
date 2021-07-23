@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
-<body>
+<body onload="initialRequest()">
 <canvas id="pic">Ваш браузер не поддерживает кеки...</canvas>
 <!--<div>Первое слово на изображении подходит к нему  <button id="result1" onclick="changeText(this.id)">Да</button></div>
 <div>Второе слово на изображении подходит к нему  <button id="result2" onclick="changeText(this.id)">Да</button></div>
@@ -57,8 +57,8 @@
 
     function painter(line){
 
-       // var ctx = document.getElementById("pic").getContext("2d");
-        //ctx.drawImage(line.image.toString('base64'), 0, 0, line.width*2, line.height*2);
+        var ctx = document.getElementById("pic").getContext("2d");
+        ctx.drawImage(line.image.toString('base64'), 0, 0, line.width*2, line.height*2);
     }
 
 

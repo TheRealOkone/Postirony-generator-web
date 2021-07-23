@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import ru.parse.Parser;
-
+import org.apache.commons.codec.binary.Base64;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
@@ -58,12 +58,12 @@ public class PController {
         WritableRaster raster = bufferedImage .getRaster();
         DataBufferByte data   = (DataBufferByte) raster.getDataBuffer();
         sus = data.getData();
-
+        String test = new String(Base64.encodeBase64(sus));
         System.out.println("asddd31222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222dddddddd\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
         JSONObject jsonComplex = new JSONObject();
         jsonComplex.put("height", h);
         jsonComplex.put("width", w);
-        jsonComplex.put("image", new String(sus, "UTF8"));
+        jsonComplex.put("image", test);
         return jsonComplex.toString();
     }
 
