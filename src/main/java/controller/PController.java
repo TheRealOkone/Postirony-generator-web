@@ -58,7 +58,7 @@ public class PController {
         WritableRaster raster = bufferedImage .getRaster();
         DataBufferByte data   = (DataBufferByte) raster.getDataBuffer();
         sus = data.getData();
-        String test = new String(Base64.encodeBase64(sus));
+        String test = new String(sus);
         System.out.println("asddd31222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222dddddddd\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
         JSONObject jsonComplex = new JSONObject();
         jsonComplex.put("height", h);
