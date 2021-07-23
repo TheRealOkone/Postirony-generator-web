@@ -1,6 +1,8 @@
 package Neuro;
 
+import controller.PController;
 import interface_.Gui;
+import ru.parse.BalabobaParser;
 import ru.parse.Parser;
 
 import javax.imageio.ImageIO;
@@ -12,16 +14,11 @@ import java.io.*;
 import java.util.Arrays;
 
 public class Postironia {
-    public void oldmain(Parser parser, Gui gui) {
-        //    public  ArrayBlockingQueue<File> qjpg;
-        //    public  ArrayBlockingQueue<File> qtxt;
-        //это мои очереди
-        //    public static ArrayBlockingQueue<String> pictures = new ArrayBlockingQueue<String>(1);
-        //    public static ArrayBlockingQueue<String> questions = new ArrayBlockingQueue<String>(1);
-        //    public static ArrayBlockingQueue<String> marks = new ArrayBlockingQueue<String>(1);
-        //это очереди Никиты
-        Generator generator = new Generator();
-        new File("ZN").mkdir();
+    public void oldmain(Parser parser, PController controller) {
+        File ZN = new File("ZN");
+        deleteDirectory(ZN);
+        ZN.mkdir();
+        int requestIndex = 0;
         try {
             while (true) {
                 File fRequest = parser.qtxt.take();
@@ -30,17 +27,8 @@ public class Postironia {
                 try (BufferedReader reader = new BufferedReader(new FileReader(fRequest))) {
                     request = reader.readLine();
                 }
-                fRequest.delete();
-                String[] texts = new String[5];
-                for (int i = 0; i < 5; i++)
-                    texts[i] = "";
-                String text = "";
-                try {
-                    texts = generator.getText(request);
-                    text = texts[0];
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                String text = crop(BalabobaParser.getText(request));
+                System.out.println(text);
                 BufferedImage read;
                 try {
                     read = ImageIO.read(filePicture);
@@ -59,40 +47,30 @@ public class Postironia {
                     g.drawString(text, x, y);
                     g.dispose();
                 } catch (Exception e) {
+                    System.exit(0);
                     e.printStackTrace();
+                    fRequest.delete();
                     filePicture.delete();
                     continue;
                 }
-                String imageName = "ZN\\image.jpg";
+                String imageName = "ZN\\image" + requestIndex +".jpg";
+                requestIndex++;
+                if (requestIndex == 500)
+                    requestIndex = 0;
                 File resultImage = new File(imageName);
                 ImageIO.write(read, "jpg", resultImage);
+
+                controller.images.put(resultImage);
+
+                fRequest.delete();
                 filePicture.delete();
-                Gui.pictures.put(resultImage.getAbsolutePath());
-                Gui.questions.put(texts[2]);
-                String mark = Gui.marks.take();
-                String[] strings = new String[6];
-                System.arraycopy(texts, 0, strings, 0, texts.length);
-                strings[5] = mark;
-                System.out.println(Arrays.toString(strings));
-                generator.putWord(strings);
             }
         }
         catch (Exception e) {
             e.printStackTrace();
-            generator.close();
-            e.printStackTrace();
-        }
-    }
+            System.exit(0);
 
-    private static void deleteDirectory(File dir) {
-        if (dir.isDirectory()) {
-            String[] children = dir.list();
-            for (String aChildren : children) {
-                File f = new File(dir, aChildren);
-                deleteDirectory(f);
-            }
-            dir.delete();
-        } else dir.delete();
+        }
     }
 
     private static Color getColor(BufferedImage image, int x, int y) {
@@ -129,6 +107,30 @@ public class Postironia {
             return Color.BLACK;
     }
 
+    private static void deleteDirectory(File dir) {
+        if (dir.isDirectory()) {
+            String[] children = dir.list();
+            for (String aChildren : children) {
+                File f = new File(dir, aChildren);
+                deleteDirectory(f);
+            }
+            dir.delete();
+        } else dir.delete();
+    }
+
+    private static String crop(String text) {
+        String[] strs = text.split("-");
+        String description;
+        if (strs.length > 1)
+            description = strs[1];
+        else
+            description = strs[0];
+        String[] firstDescriptions = description.split("\\.")[0].split(" ");
+        StringBuilder result = new StringBuilder();
+        for (int i = 0; i < 5 && i < firstDescriptions.length; i++)
+            result.append(firstDescriptions[i]).append(" ");
+        return result.toString();
+    }
 
     private static Font getFont(String fontS, String text, int widthImage) {
         FontRenderContext frc = new FontRenderContext(null, true, true);

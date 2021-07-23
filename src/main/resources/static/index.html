@@ -14,7 +14,7 @@
 <div>Второе слово на изображении подходит к третьему  <button id="result6" onclick="changeText(this.id)">Да</button></div> -->
 <button id="send" onclick="initialRequest()">ЭТА КНОПКА КРАСНАЯ И НА НЕЙ НАПИСАНО "ИСЧО"</button>
 <script>
-    function requestKek()
+    /*function requestKek()
     {
         let form = "";
         if (document.getElementById(result1).textContent === "Да") form += '1 ';
@@ -53,35 +53,17 @@
     {
         if ( document.getElementById(id).textContent == "Да") document.getElementById(id).textContent = "Нет"
         else document.getElementById(id).textContent = "Да"
+    } */
+
+    function painter(line){
+
+        var ctx = document.getElementById("pic").getContext("2d");
+        ctx.drawImage(line.image.toString('base64'), 0, 0, line.width*2, line.height*2);
     }
 
-    function painter(imgData) {
-        "use strict";
-        var canvas = document.getElementById("pic");
-        var ctx = canvas.getContext("2d");
 
-        //var uInt8Array = new Uint8Array(imgData);
-        var uInt8Array = imgData;
-        var i = uInt8Array.length;
-        var binaryString = [i];
-        while (i--) {
-            binaryString[i] = String.fromCharCode(uInt8Array[i]);
-        }
-        var data = binaryString.join('');
 
-        var base64 = window.btoa(data);
 
-        var img = new Image();
-        img.src = "data:image/png;base64," + base64;
-        img.onload = function () {
-            console.log("Image Onload");
-            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-        };
-        img.onerror = function (stuff) {
-            console.log("Img Onerror:", stuff);
-        };
-
-    }
     /*function painter() {
         var canvas = document.getElementById('pic');
         var ctx = canvas.getContext("2d");
