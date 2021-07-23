@@ -17,6 +17,7 @@ import java.awt.image.DataBufferByte;
 import java.awt.image.WritableRaster;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.concurrent.LinkedBlockingQueue;
 
 @Controller
@@ -55,9 +56,7 @@ public class PController {
         BufferedImage bufferedImage = ImageIO.read(image);
         int h = bufferedImage.getHeight();
         int w = bufferedImage.getWidth();
-        WritableRaster raster = bufferedImage .getRaster();
-        DataBufferByte data   = (DataBufferByte) raster.getDataBuffer();
-        sus = data.getData();
+        sus = Files.readAllBytes(image.toPath());
         String test = new String(sus);
         System.out.println("asddd31222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222dddddddd\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
         JSONObject jsonComplex = new JSONObject();
