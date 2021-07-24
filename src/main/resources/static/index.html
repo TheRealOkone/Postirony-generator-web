@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,7 +6,8 @@
     <title>Title</title>
 </head>
 <body onload="initialRequest()">
-<canvas id="pic">Ваш браузер не поддерживает кеки...</canvas>
+<canvas id = "pic"> </canvas>
+<div id="content"></div>
 <!--<div>Первое слово на изображении подходит к нему  <button id="result1" onclick="changeText(this.id)">Да</button></div>
 <div>Второе слово на изображении подходит к нему  <button id="result2" onclick="changeText(this.id)">Да</button></div>
 <div>Третье слово на изображении подходит к нему  <button id="result3" onclick="changeText(this.id)">Да</button></div>
@@ -54,26 +56,51 @@
         if ( document.getElementById(id).textContent == "Да") document.getElementById(id).textContent = "Нет"
         else document.getElementById(id).textContent = "Да"
     } */
+    function downscale(image){
+        var canvas = document.getElementById("pic");
+        var ctx = canvas.getContext("2d");
+        var img = new Image();
 
-    function painter(line){
+        img.onload = function () {
 
-        var ctx = document.getElementById("pic").getContext("2d");
-        ctx.drawImage(line.image.toString('base64'), 0, 0, line.width*2, line.height*2);
+            // set size proportional to image
+            canvas.height = canvas.width * (img.height / img.width);
+
+            // step 1 - resize to 50%
+            var oc = document.createElement('canvas'),
+                octx = oc.getContext('2d');
+
+            oc.width = img.width * 0.5;
+            oc.height = img.height * 0.5;
+            octx.drawImage(img, 0, 0, oc.width, oc.height);
+
+            // step 2
+            octx.drawImage(oc, 0, 0, oc.width * 0.5, oc.height * 0.5);
+
+            // step 3, resize to final size
+            ctx.drawImage(oc, 0, 0, oc.width * 0.5, oc.height * 0.5,
+                0, 0, canvas.width, canvas.height);
+        }
+        img.src = "data:image/jpeg;base64,"+image;
     }
 
-
-
-
-    /*function painter() {
-        var canvas = document.getElementById('pic');
+    function painter(data){
+        const obj = JSON.parse(data);
+        var canvas = document.getElementById("pic");
         var ctx = canvas.getContext("2d");
-
-        ctx.fillStyle = "rgb(200,0,0)";
-        ctx.fillRect (10, 10, 55, 50);
-
-        ctx.fillStyle = "rgba(0, 0, 200, 0.5)";
-        ctx.fillRect (30, 30, 55, 50);
-    }*/
+        const width  = window.innerWidth || document.documentElement.clientWidth ||
+            document.body.clientWidth;
+        const height = window.innerHeight|| document.documentElement.clientHeight||
+            document.body.clientHeight;
+        var image = new Image();
+        image.onload = function() {
+            canvas.width = obj.width;
+            canvas.height = obj.height;
+            ctx.drawImage(image, 0, 0);
+        };
+        image.src = "data:image/jpeg;base64,"+obj.image;
+        //downscale(obj.image);
+    }
 
     function initialRequest() {
         let url = new URL('http://localhost:8080/g1');
@@ -82,16 +109,10 @@
         xhr.send();
         xhr.onload = function() {
             if (xhr.status != 200) {
-            alert(`Ошибка ${xhr.status}: ${xhr.statusText}`);
+                alert(`Ошибка ${xhr.status}: ${xhr.statusText}`);
             }
-        else {
-                var canvas = document.getElementById('pic');
-
-                if (canvas.getContext){
-                    painter(xhr.response);
-                } else {
-                    alert("Ваш браузер не поддерживает кеки...");
-                }
+            else {
+                painter(xhr.response);
             }
         };
 
