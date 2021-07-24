@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import ru.parse.Parser;
 import org.apache.commons.codec.binary.Base64;
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.awt.image.WritableRaster;
@@ -44,6 +45,7 @@ public class PController {
     }
 
 
+
     @RequestMapping(value = "/g1", method = RequestMethod.GET)
     @ResponseBody
     public String gone() throws IOException, JSONException {
@@ -57,7 +59,7 @@ public class PController {
         int h = bufferedImage.getHeight();
         int w = bufferedImage.getWidth();
         sus = Files.readAllBytes(image.toPath());
-        String test = new String(sus);
+        String test = new String(Base64.encodeBase64(sus), "UTF-8");
         System.out.println("asddd31222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222dddddddd\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
         JSONObject jsonComplex = new JSONObject();
         jsonComplex.put("height", h);
