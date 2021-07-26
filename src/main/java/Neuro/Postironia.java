@@ -15,6 +15,7 @@ import java.util.Arrays;
 
 public class Postironia {
     public void oldmain(Parser parser, PController controller) {
+        TextWorker worker = new TextWorker();
         File ZN = new File("ZN");
         deleteDirectory(ZN);
         ZN.mkdir();
@@ -32,22 +33,8 @@ public class Postironia {
                 BufferedImage read;
                 try {
                     read = ImageIO.read(filePicture);
-                    Graphics2D g = (Graphics2D) read.getGraphics();
-                    g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_GASP);
-                    Font font = getFont("TimesRoman", text, read.getWidth());
-                    g.setFont(font);
-                    FontRenderContext frc = new FontRenderContext(null, true, true);
-                    Rectangle2D r2D = font.getStringBounds(text, frc);
-                    int rWidth = (int) Math.round(r2D.getWidth());
-                    int x = (read.getWidth() / 2) - (rWidth / 2);
-                    int y = read.getHeight();
-                    if (read.getHeight() > 10)
-                        y = read.getHeight() - 10;
-                    g.setColor(getColor(read, x, y));
-                    g.drawString(text, x, y);
-                    g.dispose();
+                    worker.work(read, text);
                 } catch (Exception e) {
-                    System.exit(0);
                     e.printStackTrace();
                     fRequest.delete();
                     filePicture.delete();
@@ -59,52 +46,14 @@ public class Postironia {
                     requestIndex = 0;
                 File resultImage = new File(imageName);
                 ImageIO.write(read, "jpg", resultImage);
-
                 controller.images.put(resultImage);
-
                 fRequest.delete();
                 filePicture.delete();
             }
         }
         catch (Exception e) {
             e.printStackTrace();
-            System.exit(0);
-
         }
-    }
-
-    private static Color getColor(BufferedImage image, int x, int y) {
-        int black = 0;
-        int white = 0;
-        int clr;
-        int red;
-        int green;
-        int blue;
-        for (int i = -10; i < 10; i++) {
-            int newX = x + i;
-            if (newX > 0 && newX < image.getWidth())
-                for (int j = -10; j < 10; j++) {
-                    int newY = y + j;
-                    if (newY > 0 && newY < image.getHeight()) {
-                        clr = image.getRGB(newX, newY);
-                        red = (clr & 0x00ff0000) >> 16;
-                        green = (clr & 0x0000ff00) >> 8;
-                        blue = clr & 0x000000ff;
-                        if (red >= 100 && green >= 100 && blue >= 100 && Math.abs(red - green) < 47 && Math.abs(red - blue) < 47 && Math.abs(blue - green) < 47)
-                            black++;
-                        else if (red >= 200 && green >= 200 && blue >= 200)
-                            black++;
-                        else if (red - blue > 100 && green - blue > 100)
-                            black++;
-                        else
-                            white++;
-                    }
-                }
-        }
-        if (white >= black)
-            return Color.WHITE;
-        else
-            return Color.BLACK;
     }
 
     private static void deleteDirectory(File dir) {
@@ -119,28 +68,20 @@ public class Postironia {
     }
 
     private static String crop(String text) {
-        String[] strs = text.split("-");
-        String description;
-        if (strs.length > 1)
-            description = strs[1];
-        else
-            description = strs[0];
-        String[] firstDescriptions = description.split("\\.")[0].split(" ");
-        StringBuilder result = new StringBuilder();
-        for (int i = 0; i < 5 && i < firstDescriptions.length; i++)
-            result.append(firstDescriptions[i]).append(" ");
-        return result.toString();
-    }
-
-    private static Font getFont(String fontS, String text, int widthImage) {
-        FontRenderContext frc = new FontRenderContext(null, true, true);
-        Font font = null;
-        for (int size = 200; size > 0; size -= 15) {
-            font = new Font(fontS, Font.PLAIN, size);
-            if (widthImage - 15 > (int) Math.round(font.getStringBounds(text, frc).getWidth()))
-                return font;
-        }
-        return font;
+        String shortText = text.split("\\.")[0].split(" - ")[0].split(",")[0];
+        String[] questionSplit = shortText.split("\\?");
+        if (questionSplit.length > 1)
+            shortText = questionSplit[0] + "?";
+        else shortText = questionSplit[0];
+        String[] exclamationSplit = shortText.split("\\?");
+        if (exclamationSplit.length > 1)
+            shortText = exclamationSplit[0] + "!";
+        else shortText = exclamationSplit[0];
+//        String[] cropText = shortText.split(" ");
+//        StringBuilder result = new StringBuilder();
+//        for (int i = 0; i < 7 && i < cropText.length; i++)
+//            result.append(cropText[i]).append(" ");
+        return shortText;
     }
 }
 

@@ -39,6 +39,6 @@ public class BalabobaParser {
             str = str.replace(boba, String.valueOf((char) Integer.parseInt((str.substring(str.indexOf("\\u") + 2, str.indexOf("\\u") + 6)), 16)));
         }
         conn.disconnect();
-        return str;
+        return query + " " + str;
     }
 }
