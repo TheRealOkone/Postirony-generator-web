@@ -1,7 +1,7 @@
 package controller;
 
 import Neuro.*;
-import interface_.*;
+
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -18,6 +18,7 @@ import java.awt.image.DataBufferByte;
 import java.awt.image.WritableRaster;
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.nio.file.Files;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -48,23 +49,43 @@ public class PController {
 
     @RequestMapping(value = "/g1", method = RequestMethod.GET)
     @ResponseBody
-    public String gone() throws IOException, JSONException {
+    public String gone() {
         File image = null;
         try {
             image = images.take();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        BufferedImage bufferedImage = ImageIO.read(image);
+        BufferedImage bufferedImage = null;
+        try {
+            bufferedImage = ImageIO.read(image);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         int h = bufferedImage.getHeight();
         int w = bufferedImage.getWidth();
-        sus = Files.readAllBytes(image.toPath());
-        String test = new String(Base64.encodeBase64(sus), "UTF-8");
+        try {
+            sus = Files.readAllBytes(image.toPath());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        String test = null;
+        try {
+            test = new String(Base64.encodeBase64(sus), "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
         System.out.println("asddd31222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222dddddddd\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
-        JSONObject jsonComplex = new JSONObject();
-        jsonComplex.put("height", h);
-        jsonComplex.put("width", w);
-        jsonComplex.put("image", test);
+        JSONObject jsonComplex = null;
+        try {
+            jsonComplex = new JSONObject();
+            jsonComplex.put("height", h);
+            jsonComplex.put("width", w);
+            jsonComplex.put("image", test);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
         return jsonComplex.toString();
     }
 
