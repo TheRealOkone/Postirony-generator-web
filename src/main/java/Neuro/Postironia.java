@@ -1,7 +1,7 @@
 package Neuro;
 
 import controller.PController;
-import interface_.Gui;
+
 import ru.parse.BalabobaParser;
 import ru.parse.Parser;
 
